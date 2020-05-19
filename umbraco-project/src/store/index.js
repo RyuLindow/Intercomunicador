@@ -57,11 +57,7 @@ export default new Vuex.Store({
     employeeValue: null,
     employeeOptions: [],
     locationValue: null,
-    locationOptions: [
-      { id: 1, name: "Odense, Denmark" },
-      { id: 2, name: "Sydney, Australia" },
-      { id: 3, name: "New York, United States" }
-    ],
+    locationOptions: [],
 
     // Ignored employees, should not be displayed in filter
     ignoredEmployeeIds: [
@@ -214,7 +210,7 @@ export default new Vuex.Store({
   actions: {
     login({ commit }, credentials) {
       return axios
-        .post("//localhost:5000/login", credentials)
+        .post("//localhost:3000/login", credentials)
         .then(({ data }) => {
           commit("SET_USER_DATA", data);
         });
@@ -223,6 +219,7 @@ export default new Vuex.Store({
       commit("LOGOUT");
     },
 
+    // GET employee names
     fetchEmployees(context) {
       axios.get("http://localhost:3000/admins").then(response => {
         let admins = response.data.admins;
@@ -230,47 +227,33 @@ export default new Vuex.Store({
           employee => !context.state.ignoredEmployeeIds.includes(parseInt(employee.id))
         );
         context.commit("setEmployeeOptions", result);
-      })
-      
-      /* commented out, so the build can succeed
-        .catch(error => {
+      }).catch(error => {
         console.log(error);
       });
-      */
     },
 
-    // GET country name
-    fetchLocations() {
-      axios.get("http://localhost:3000/contacts")
-        .then(response => {
-          let contacts = response.data.data;
-          /* commented out for now but this I have to create a method to list all countries here later
-           contacts.forEach(element => {
-            console.log(element.location.country); 
-          }); */
-
-          this.locationOptions = contacts;
-        })
-      /* commented out, so the build can succeed
-        .catch(error => {
-        console.log(error);
-      });
-      */
+    // GET country names
+    fetchLocations(context) {
+      axios.get("http://localhost:3000/contacts").then(response => {
+          let contacts = response.data.data;          
+          var unique = contacts
+          .map(element => element.location.country)
+          .filter((value, index, self) => self.indexOf(value) == index)
+          .map(country => ({ name: country }))
+          context.commit("setLocationOptions", unique);
+        }).catch(error => {
+          console.log(error);
+        });
     },
 
-    // Get tickets
+    // GET tickets
     fetchConversations(context) {
       axios.get("http://localhost:3000/conversations").then(response => {
         let conversations = response.data;
         context.commit("setConversations", conversations);
-      })
-      
-      
-      /* commented out, so the build can succeed
-        .catch(error => {
+      }).catch(error => {
         console.log(error);
       });
-      */
     }
   }
 })

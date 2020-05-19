@@ -27,7 +27,7 @@ export default {
     ShowHide
   },
   created() {
-    axios.get("//localhost:5000/home").then(({ data }) => {
+    axios.get("//localhost:3000/home").then(({ data }) => {
       this.home = data.home.home;
       this.isLoading = false;
     });
