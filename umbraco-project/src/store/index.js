@@ -227,9 +227,13 @@ export default new Vuex.Store({
           employee => !context.state.ignoredEmployeeIds.includes(parseInt(employee.id))
         );
         context.commit("setEmployeeOptions", result);
-      }).catch(error => {
+      })
+      
+      /* commented out, so the build can succeed
+        .catch(error => {
         console.log(error);
       });
+      */
     },
 
     // GET country names
@@ -241,9 +245,13 @@ export default new Vuex.Store({
           .filter((value, index, self) => self.indexOf(value) == index)
           .map(country => ({ name: country }))
           context.commit("setLocationOptions", unique);
-        }).catch(error => {
-          console.log(error);
-        });
+        })
+
+      /* commented out, so the build can succeed
+        .catch(error => {
+        console.log(error);
+      });
+      */
     },
 
     // GET tickets
@@ -251,9 +259,13 @@ export default new Vuex.Store({
       axios.get("http://localhost:3000/conversations").then(response => {
         let conversations = response.data;
         context.commit("setConversations", conversations);
-      }).catch(error => {
+      })
+
+      /* commented out, so the build can succeed
+        .catch(error => {
         console.log(error);
       });
+      */
     }
   }
 })
