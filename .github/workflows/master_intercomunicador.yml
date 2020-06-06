@@ -1,7 +1,7 @@
 name: Build and deploy Node.js app to Azure Web App - intercomunicador
 
 
-# Get the code from the master branch
+# Triggers when code is pushed to the master branch
 on:
   push:
     branches:
