@@ -210,7 +210,7 @@ export default new Vuex.Store({
   actions: {
     login({ commit }, credentials) {
       return axios
-        .post("//localhost:3000/login", credentials)
+        .post("https://node-intercom.azurewebsites.net/login", credentials)
         .then(({ data }) => {
           commit("SET_USER_DATA", data);
         });
@@ -221,7 +221,7 @@ export default new Vuex.Store({
 
     // GET employee names
     fetchEmployees(context) {
-      axios.get("http://localhost:3000/admins").then(response => {
+      axios.get("https://node-intercom.azurewebsites.net/admins").then(response => {
         let admins = response.data.admins;
         let result = admins.filter(
           employee => !context.state.ignoredEmployeeIds.includes(parseInt(employee.id))
@@ -238,7 +238,7 @@ export default new Vuex.Store({
 
     // GET country names
     fetchLocations(context) {
-      axios.get("http://localhost:3000/contacts").then(response => {
+      axios.get("https://node-intercom.azurewebsites.net/contacts").then(response => {
           let contacts = response.data.data;          
           var unique = contacts
           .map(element => element.location.country)
@@ -256,7 +256,7 @@ export default new Vuex.Store({
 
     // GET tickets
     fetchConversations(context) {
-      axios.get("http://localhost:3000/conversations").then(response => {
+      axios.get("https://node-intercom.azurewebsites.net/conversations").then(response => {
         let conversations = response.data;
         context.commit("setConversations", conversations);
       })
